@@ -1,11 +1,55 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+const gallery = await getCollection("gallery");
+import { Image } from "astro:assets";
+const cols: CollectionEntry<"gallery">[][] = [[], [], []];
+const photoCols = gallery.reduce((acc, curr, i) => {
+    acc[i % 3].push(curr);
+    return acc;
+}, cols);
 ---
 
 <Layout>
-	<Welcome />
+    <header class="border-b border-gray-300">
+        <nav>
+            <ul class="flex justify-end">
+                <li>
+                    <a href="#" target="_blank" class="p-3 inline-block">
+                        Main Website
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="hero py-16">
+        <h1 class="text-center text-4xl font-bold mb-8">Gallery</h1>
+        <div class="container px-5">
+            <div class="gallery flex gap-2">
+                {photoCols.map((photos: CollectionEntry<"gallery">[]) => (
+                    <div class="col flex-1">
+                        {photos.map((photo) => (
+                            <div class="image-thumbnail mb-2">
+                                <Image src={photo.data.src} alt="test" />
+                                <ul class="exif">
+                                    <li>{photo.data.camera_settings.camera}</li>
+                                    <li>
+                                        F/{photo.data.camera_settings.aperture}
+                                    </li>
+                                    <li>
+                                        {
+                                            photo.data.camera_settings
+                                                .focal_length
+                                        }
+                                        mm
+                                    </li>
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+    <nav></nav>
 </Layout>
