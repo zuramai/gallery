@@ -1,0 +1,97 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<dialog id="photo-lightbox" class="lightbox" aria-labelledby="lightbox-title" aria-describedby="lightbox-description">
+    <div class="lightbox-shell">
+        <button type="button" class="lightbox-close" data-close-lightbox aria-label="Close photo details" autofocus><Icon name="close" size={22} /></button>
+        <div class="lightbox-viewer">
+            <div class="viewer-heading eyebrow"><span>Saugi — photographic journal</span><span data-lightbox-counter></span></div>
+            <div class="lightbox-image-wrap">
+                <img data-lightbox-image alt="" />
+                <p class="image-error" data-image-error hidden>This photograph could not load. <a data-image-retry href="#" target="_blank" rel="noopener noreferrer">Open image</a></p>
+            </div>
+            <div class="viewer-navigation">
+                <button type="button" data-previous-photo aria-label="Previous photograph"><Icon name="arrow-left" size={20} /><span>Previous</span></button>
+                <span class="keyboard-hint">Use ← → to explore</span>
+                <button type="button" data-next-photo aria-label="Next photograph"><span>Next</span><Icon name="arrow-right" size={20} /></button>
+            </div>
+        </div>
+        <div class="lightbox-details">
+            <span class="eyebrow lightbox-kicker">A moment, in detail</span>
+            <h2 id="lightbox-title"></h2>
+            <p class="lightbox-location"><Icon name="pin" size={15} /><span data-lightbox-location></span></p>
+            <p id="lightbox-description"></p>
+            <div class="lightbox-tags" data-lightbox-tags aria-label="Photo tags"></div>
+            <div class="camera-details">
+                <span class="eyebrow">Behind the frame</span>
+                <dl>
+                    <div><dt>Camera</dt><dd data-detail="camera"></dd></div>
+                    <div><dt>Aperture</dt><dd data-detail="aperture"></dd></div>
+                    <div><dt>Focal length</dt><dd data-detail="focal_length"></dd></div>
+                    <div><dt>ISO</dt><dd data-detail="iso"></dd></div>
+                </dl>
+            </div>
+            <a class="full-image-link" data-full-image href="#" target="_blank" rel="noopener noreferrer">Open full photograph <Icon name="arrow-up-right" size={16} /></a>
+        </div>
+    </div>
+    <p class="lightbox-announcement" data-lightbox-announcement role="status" aria-live="polite" aria-atomic="true"></p>
+</dialog>
+
+<style>
+    .lightbox { width: min(1240px, calc(100% - 64px)); max-width: none; max-height: calc(100dvh - 64px); padding: 0; margin: auto; border: 0; background: var(--paper); color: var(--ink); box-shadow: 0 24px 100px rgb(0 0 0 / 25%); }
+    .lightbox::backdrop { background: rgb(26 28 24 / 78%); backdrop-filter: blur(7px); }
+    .lightbox[open] { animation: lightbox-in 200ms ease both; }
+    .lightbox-shell { position: relative; display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(300px, 1fr); min-height: min(670px, calc(100dvh - 64px)); }
+    .lightbox-close { position: absolute; right: 15px; top: 15px; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; background: var(--paper); color: var(--ink); border: 1px solid var(--rule); transition: background 180ms ease; }
+    .lightbox-close:hover { background: #ebe7dc; }
+    .lightbox-viewer { display: flex; flex-direction: column; min-width: 0; padding: 25px; background: #1e211d; color: var(--paper); }
+    .viewer-heading { display: flex; justify-content: space-between; gap: 15px; color: #b0b4a8; font-size: 8px; }
+    .lightbox-image-wrap { position: relative; display: flex; align-items: center; justify-content: center; flex: 1; min-height: 0; padding-block: 25px; }
+    .lightbox-image-wrap img { display: block; width: 100%; height: min(530px, calc(100dvh - 210px)); object-fit: contain; }
+    .image-error { position: absolute; max-width: 220px; font-size: 12px; text-align: center; line-height: 1.8; }
+    .image-error a { text-decoration: underline; }
+    .viewer-navigation { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    .viewer-navigation button { display: flex; align-items: center; gap: 9px; min-height: 44px; padding: 0 5px; background: transparent; border: 0; color: var(--paper); font-family: var(--nunito-sans); font-size: 10px; }
+    .viewer-navigation button:hover { color: #cba48e; }
+    .viewer-navigation button:disabled { opacity: 0.3; }
+    .keyboard-hint { color: #999e92; font-size: 9px; }
+    .lightbox-details { display: flex; flex-direction: column; align-items: flex-start; padding: 90px 36px 36px; }
+    .lightbox-kicker { font-size: 8px; color: var(--accent); }
+    h2 { margin: 21px 0 15px; font-family: var(--cormorant-garamond); font-size: 45px; font-weight: 400; line-height: 1; letter-spacing: -0.03em; }
+    .lightbox-location { display: flex; align-items: center; gap: 7px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .lightbox-location :global(svg) { flex-shrink: 0; }
+    #lightbox-description { margin: 25px 0 14px; color: #686b61; font-size: 12px; line-height: 1.9; }
+    .lightbox-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .lightbox-tags :global(button) { border: 1px solid var(--rule); padding: 8px 11px; background: transparent; color: var(--muted); font-family: var(--nunito-sans); font-size: 9px; }
+    .lightbox-tags :global(button:hover) { border-color: var(--accent); color: var(--accent); }
+    .camera-details { width: 100%; border-top: 1px solid var(--rule); margin-top: 30px; padding-top: 25px; }
+    .camera-details > span { font-size: 8px; color: var(--muted); }
+    dl { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0 0; }
+    dt { margin-bottom: 4px; color: var(--muted); font-size: 9px; }
+    dd { margin: 0; font-family: var(--cormorant-garamond); font-size: 23px; }
+    .full-image-link { display: flex; align-items: center; gap: 13px; margin-top: auto; padding-top: 30px; font-size: 10px; text-decoration: none; }
+    .full-image-link:hover { color: var(--accent); }
+    .lightbox-announcement { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    @keyframes lightbox-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 900px) {
+        .lightbox { width: calc(100% - 32px); max-height: calc(100dvh - 32px); }
+        .lightbox-shell { grid-template-columns: minmax(0, 1fr) 290px; }
+        .lightbox-details { padding-inline: 25px; }
+        .keyboard-hint, .viewer-heading > :first-child { display: none; }
+    }
+    @media (max-width: 600px) {
+        .lightbox { width: calc(100% - 24px); max-height: calc(100dvh - 24px); }
+        .lightbox-shell { display: block; }
+        .lightbox-close { top: 10px; right: 10px; width: 36px; height: 36px; }
+        .lightbox-viewer { padding: 18px; }
+        .viewer-heading { min-height: 24px; align-items: center; }
+        .lightbox-image-wrap { padding-block: 10px; }
+        .lightbox-image-wrap img { height: 44dvh; }
+        .lightbox-details { padding: 30px 25px; }
+        h2 { margin-top: 15px; font-size: 40px; }
+        #lightbox-description { margin-top: 20px; }
+        .camera-details { margin-top: 23px; padding-top: 20px; }
+        .lightbox-tags :global(button) { min-height: 36px; }
+    }
+</style>

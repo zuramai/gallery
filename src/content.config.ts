@@ -1,31 +1,22 @@
 import { glob } from "astro/loaders";
-import { float32, int, string, z } from "astro/zod";
+import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
 
-const PhotoSchema = z.object({
-  description: string(),
-  src: string(),
-  tags: z.array(z.string()),
+const photoMetadata = z.object({
+  title: z.string().min(1),
+  description: z.string().min(1),
+  location: z.string().min(1),
+  tags: z.array(z.string().trim().min(1)).min(1),
   camera_settings: z.object({
-    aperture: float32(),
-    iso: int(),
-    focal_length: int(),
+    camera: z.string(),
+    aperture: z.number().positive(),
+    iso: z.number().int().positive(),
+    focal_length: z.number().positive(),
   }),
 });
 const gallery = defineCollection({
-  schema: ({ image }) =>
-    z.object({
-      description: string(),
-      src: image(),
-      tags: z.array(z.string()),
-      camera_settings: z.object({
-        camera: string(),
-        aperture: float32(),
-        iso: int(),
-        focal_length: int(),
-      }),
-    }),
+  schema: ({ image }) => photoMetadata.extend({ src: image() }),
   loader: glob({ base: "./src/photos", pattern: "**/*.{md,mdx}" }),
 });
-export type Photo = z.infer<typeof PhotoSchema>;
+export type Photo = z.infer<typeof photoMetadata>;
 export const collections = { gallery };

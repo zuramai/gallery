@@ -1,8 +1,12 @@
 ---
-description: Ho Chi Minh, the first president of Vietnam.
+title: Between the smoke
+description: A quiet pause outside a temple, framed by drifting incense and red doorways.
+location: Singapore
 src: images/sg-man-smoking.JPG
 tags:
-  - Vietnam
+  - Street
+  - People
+  - Singapore
 camera_settings:
   camera: X-M5
   iso: 100

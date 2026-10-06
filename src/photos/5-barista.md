@@ -1,8 +1,11 @@
 ---
-description: Prau
+title: In the quieter hours
+description: Silhouettes gather around a counter beneath a patterned window.
+location: Location unrecorded
 src: images/barista.JPG
 tags:
-  - Vietnam
+  - People
+  - Everyday
 camera_settings:
   camera: X-M5
   iso: 100

@@ -1,0 +1,50 @@
+---
+import Icon from "./Icon.astro";
+
+const socials = [
+    { name: "GitHub", icon: "github", url: "https://github.com/zuramai" },
+    { name: "LinkedIn", icon: "linkedin", url: "https://www.linkedin.com/in/ahmad-saugi" },
+    { name: "Instagram", icon: "instagram", url: "https://www.instagram.com/asawgi/" },
+] as const;
+---
+
+<header class="site-header page-shell">
+    <a class="brand" href="/" aria-label="Saugi photography home">
+        Saugi<span class="brand-dot">.</span>
+        <span class="brand-label eyebrow">Photography</span>
+    </a>
+    <nav class="social-links" aria-label="Find Saugi elsewhere">
+        {socials.map((social) => (
+            <a href={social.url} target="_blank" rel="noopener noreferrer" aria-label={`${social.name} (opens in a new tab)`} title={social.name}>
+                <Icon name={social.icon} size={18} />
+            </a>
+        ))}
+        <span class="social-divider" aria-hidden="true"></span>
+        <a class="main-website" href="https://saugi.me" target="_blank" rel="noopener noreferrer" aria-label="Main website (opens in a new tab)" title="Main website">
+            <Icon name="globe" size={18} />
+            <span>Main website</span>
+            <span class="website-arrow"><Icon name="arrow-up-right" size={13} /></span>
+        </a>
+    </nav>
+</header>
+
+<style>
+    .site-header { display: flex; align-items: center; justify-content: space-between; min-height: 104px; border-bottom: 1px solid var(--rule); gap: 20px; }
+    .brand { display: flex; align-items: baseline; font-family: var(--cormorant-garamond); font-size: 44px; font-weight: 600; letter-spacing: -2px; text-decoration: none; }
+    .brand-dot { color: var(--accent); }
+    .brand-label { margin-left: 23px; font-family: var(--nunito-sans); color: var(--muted); letter-spacing: 0.19em; }
+    .social-links { display: flex; align-items: center; gap: 12px; }
+    .social-links a { display: flex; align-items: center; justify-content: center; width: 36px; min-height: 44px; text-decoration: none; transition: color 180ms ease; }
+    .social-links a:hover { color: var(--accent); }
+    .social-divider { width: 1px; height: 19px; margin-inline: 7px; background: var(--rule); }
+    .social-links .main-website { width: auto; gap: 9px; font-size: 11px; }
+    .website-arrow { margin-left: 3px; }
+    @media (max-width: 600px) {
+        .site-header { min-height: 86px; gap: 10px; }
+        .brand { font-size: 38px; }
+        .brand-label, .main-website span { display: none; }
+        .social-links { gap: 2px; }
+        .social-divider { margin-inline: 5px; }
+        .social-links .main-website { width: 32px; }
+    }
+</style>

@@ -1,46 +1,50 @@
-# Astro Starter Kit: Basics
+# Saugi — A photographic journal
+
+A personal photography portfolio built with Astro. The gallery uses the photos' original proportions, with tag filters and a keyboard-accessible photo-detail lightbox.
+
+## Development
+
+Use Node.js 22.12+ and pnpm 11+.
 
 ```sh
-pnpm create astro@latest -- --template basics
+pnpm install
+pnpm dev --background
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Command | Action |
+| --- | --- |
+| `pnpm astro dev status` | Check the background server |
+| `pnpm astro dev logs` | View server logs |
+| `pnpm astro dev stop` | Stop the server |
+| `pnpm check` | Validate Astro and TypeScript files |
+| `pnpm build` | Build the static site into `dist/` |
+| `pnpm preview` | Preview the production build |
 
-## 🚀 Project Structure
+## Adding photographs
 
-Inside of your Astro project, you'll see the following folders and files:
+Put your image in `src/photos/images/` and add a Markdown file in `src/photos/`:
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```yaml
+---
+title: A moment worth keeping
+description: A short description of what is in the photograph.
+location: Hanoi, Vietnam
+src: images/your-photo.JPG
+tags:
+  - Street
+  - Vietnam
+camera_settings:
+  camera: X-M5
+  iso: 100
+  aperture: 2.8
+  focal_length: 45
+---
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+Titles, descriptions, locations, tags, and camera settings are validated by `src/content.config.ts`. Filters and counts are generated automatically from the tags. Photos are ordered by filename, so a numeric prefix sets their order. Use `Location unrecorded` when a location is unknown.
 
-## 🧞 Commands
+Astro and Sharp generate responsive WebP thumbnails and larger lightbox images, respecting the original image orientation. Fonts are downloaded at build time and served locally.
 
-All commands are run from the root of the project, from a terminal:
+## Social links
 
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `pnpm install`         | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Edit the header links in `src/components/SiteHeader.astro` and the Instagram link in `src/pages/index.astro`.

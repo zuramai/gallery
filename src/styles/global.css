@@ -1,8 +1,112 @@
 @import "tailwindcss";
-@theme {
-    --font-sans: "Nunito Sans", sans-serif;
+
+@theme inline {
+    --font-sans: var(--nunito-sans);
+    --font-serif: var(--cormorant-garamond);
 }
+
+:root {
+    --paper: #f7f5ef;
+    --ink: #292c26;
+    --muted: #686b61;
+    --accent: #9b533b;
+    --rule: #d9d9cf;
+}
+
+html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+}
+
 body {
-    background: #fbfff0;
-    color: #28300f;
+    margin: 0;
+    min-width: 320px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--nunito-sans), sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+body.lightbox-open {
+    overflow: hidden;
+}
+
+button, a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+}
+
+button:disabled {
+    cursor: default;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 5px;
+}
+
+::selection {
+    background: #e7d3c6;
+    color: var(--ink);
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.page-shell {
+    width: min(1320px, calc(100% - 112px));
+    margin-inline: auto;
+}
+
+.eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+}
+
+.skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+    padding: 12px 18px;
+    background: var(--ink);
+    color: var(--paper);
+    transform: translateY(-150%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+    .page-shell {
+        width: calc(100% - 64px);
+    }
+}
+
+@media (max-width: 600px) {
+    .page-shell {
+        width: calc(100% - 40px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
 }

@@ -1,8 +1,12 @@
 ---
-description: Ho Chi Minh, the first president of Vietnam.
+title: One last look at the light
+description: A photographer catches the last sunlight across the water in Hanoi.
+location: Hanoi, Vietnam
 src: images/sunset-hanoi.JPG
 tags:
   - Vietnam
+  - Landscape
+  - People
 camera_settings:
   camera: X-M5
   iso: 100

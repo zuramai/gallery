@@ -1,55 +1,90 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-const gallery = await getCollection("gallery");
-import { Image } from "astro:assets";
-const cols: CollectionEntry<"gallery">[][] = [[], [], []];
-const photoCols = gallery.reduce((acc, curr, i) => {
-    acc[i % 3].push(curr);
-    return acc;
-}, cols);
+import SiteHeader from "../components/SiteHeader.astro";
+import PhotoGallery from "../components/PhotoGallery.astro";
+import Icon from "../components/Icon.astro";
+
+const photos = (await getCollection("gallery")).sort((a, b) =>
+    a.id.localeCompare(b.id, "en", { numeric: true }),
+);
 ---
 
 <Layout>
-    <header class="border-b border-gray-300">
-        <nav>
-            <ul class="flex justify-end">
-                <li>
-                    <a href="#" target="_blank" class="p-3 inline-block">
-                        Main Website
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <div class="hero py-16">
-        <h1 class="text-center text-4xl font-bold mb-8">Gallery</h1>
-        <div class="container px-5">
-            <div class="gallery flex gap-2">
-                {photoCols.map((photos: CollectionEntry<"gallery">[]) => (
-                    <div class="col flex-1">
-                        {photos.map((photo) => (
-                            <div class="image-thumbnail mb-2">
-                                <Image src={photo.data.src} alt="test" />
-                                <ul class="exif">
-                                    <li>{photo.data.camera_settings.camera}</li>
-                                    <li>
-                                        F/{photo.data.camera_settings.aperture}
-                                    </li>
-                                    <li>
-                                        {
-                                            photo.data.camera_settings
-                                                .focal_length
-                                        }
-                                        mm
-                                    </li>
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
-                ))}
+    <SiteHeader />
+    <main id="main" class="page-shell">
+        <section class="intro" aria-labelledby="intro-title">
+            <p class="intro-kicker eyebrow"><span></span>A visual journal by Ahmad Saugi</p>
+            <div class="intro-body">
+                <h1 id="intro-title">The art of<br /><em>paying attention.</em></h1>
+                <div class="intro-note">
+                    <Icon name="aperture" size={30} />
+                    <p>A collection of places, people, and the quiet beauty in between. Slowing down, looking closer, and keeping a little of what I find.</p>
+                    <span class="intro-signature">Through my lens, &nbsp;Saugi</span>
+                </div>
             </div>
-        </div>
-    </div>
-    <nav></nav>
+            <div class="intro-footnote">
+                <span class="eyebrow">An ongoing collection</span>
+                <span>A few moments, kept forever.</span>
+            </div>
+        </section>
+
+        <PhotoGallery photos={photos} />
+
+        <section class="endnote" aria-label="About this collection">
+            <span class="eyebrow">A note from behind the camera</span>
+            <p>Not everything needs a story.<br />Sometimes, <em>it just needs to be seen.</em></p>
+            <a href="https://www.instagram.com/asawgi/" target="_blank" rel="noopener noreferrer">Follow the journey <Icon name="arrow-up-right" size={15} /></a>
+        </section>
+    </main>
+    <footer class="site-footer page-shell">
+        <p>© {new Date().getFullYear()} Ahmad Saugi</p>
+        <span class="footer-note">Made with curiosity. Captured with care.</span>
+        <a href="#main">Back to top <span aria-hidden="true">↑</span></a>
+    </footer>
 </Layout>
+
+<style>
+    .intro { padding-top: 55px; }
+    .intro-kicker { display: flex; align-items: center; gap: 12px; color: var(--muted); }
+    .intro-kicker span { width: 22px; height: 1px; background: var(--accent); }
+    .intro-body { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; padding: 25px 0 42px; }
+    h1 { margin: 0; font-family: var(--cormorant-garamond); font-size: clamp(66px, 7.9vw, 112px); font-weight: 400; line-height: 0.94; letter-spacing: -0.045em; }
+    h1 em { font-weight: 400; color: var(--accent); }
+    .intro-note { flex: 0 0 260px; padding-bottom: 6px; }
+    .intro-note > :global(svg) { margin-bottom: 19px; color: var(--accent); }
+    .intro-note p { margin: 0; color: #686b61; font-size: 12px; line-height: 1.9; }
+    .intro-signature { display: block; margin-top: 17px; font-family: var(--cormorant-garamond); font-size: 20px; font-style: italic; }
+    .intro-footnote { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--rule); padding: 16px 0; color: var(--muted); }
+    .intro-footnote > :last-child { font-family: var(--cormorant-garamond); font-size: 18px; font-style: italic; }
+    .endnote { padding: 81px 0 87px; text-align: center; border-top: 1px solid var(--rule); }
+    .endnote > span { color: var(--muted); }
+    .endnote p { margin: 23px 0; font-family: var(--cormorant-garamond); font-size: clamp(29px, 3.3vw, 44px); line-height: 1.16; letter-spacing: -0.025em; }
+    .endnote em { color: var(--accent); }
+    .endnote a { display: inline-flex; align-items: center; gap: 13px; padding-block: 8px; font-size: 11px; text-decoration: none; border-bottom: 1px solid var(--rule); }
+    .endnote a:hover { color: var(--accent); }
+    .site-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 81px; border-top: 1px solid var(--rule); font-size: 10px; color: var(--muted); }
+    .site-footer p { margin: 0; }
+    .footer-note { font-family: var(--cormorant-garamond); font-size: 16px; font-style: italic; }
+    .site-footer a { display: flex; align-items: center; gap: 13px; min-height: 44px; text-decoration: none; }
+    @media (max-width: 900px) {
+        .intro-body { gap: 25px; }
+        .intro-note { flex-basis: 210px; }
+        h1 { font-size: clamp(60px, 8.5vw, 80px); }
+        .footer-note { display: none; }
+    }
+    @media (max-width: 600px) {
+        .intro { padding-top: 36px; }
+        .intro-kicker { font-size: 8px; letter-spacing: 0.13em; }
+        .intro-body { display: block; padding: 28px 0 31px; }
+        h1 { font-size: clamp(54px, 13.8vw, 79px); }
+        .intro-note { margin-top: 26px; max-width: 340px; }
+        .intro-note > :global(svg), .intro-signature { display: none; }
+        .intro-note p { font-size: 11px; line-height: 1.8; }
+        .intro-footnote .eyebrow { font-size: 8px; letter-spacing: 0.1em; }
+        .intro-footnote > :last-child { font-size: 15px; }
+        .endnote { padding: 58px 0; }
+        .endnote .eyebrow { font-size: 8px; }
+        .site-footer { font-size: 9px; }
+    }
+</style>
