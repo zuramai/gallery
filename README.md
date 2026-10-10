@@ -11,14 +11,14 @@ pnpm install
 pnpm dev --background
 ```
 
-| Command | Action |
-| --- | --- |
-| `pnpm astro dev status` | Check the background server |
-| `pnpm astro dev logs` | View server logs |
-| `pnpm astro dev stop` | Stop the server |
-| `pnpm check` | Validate Astro and TypeScript files |
-| `pnpm build` | Build the static site into `dist/` |
-| `pnpm preview` | Preview the production build |
+| Command                 | Action                              |
+| ----------------------- | ----------------------------------- |
+| `pnpm astro dev status` | Check the background server         |
+| `pnpm astro dev logs`   | View server logs                    |
+| `pnpm astro dev stop`   | Stop the server                     |
+| `pnpm check`            | Validate Astro and TypeScript files |
+| `pnpm build`            | Build the static site into `dist/`  |
+| `pnpm preview`          | Preview the production build        |
 
 ## Adding photographs
 
@@ -41,10 +41,6 @@ camera_settings:
 ---
 ```
 
-Titles, descriptions, locations, tags, and camera settings are validated by `src/content.config.ts`. Filters and counts are generated automatically from the tags. Photos are ordered by filename, so a numeric prefix sets their order. Use `Location unrecorded` when a location is unknown.
+Titles, descriptions, locations, tags, and camera settings are validated by `src/content.config.ts`. Filters and counts are generated automatically from the tags. Photos are shuffled on every page load, and filtering retains that visit's order. Numeric filename prefixes determine the stable frame numbers. Use `Location unrecorded` when a location is unknown.
 
 Astro and Sharp generate responsive WebP thumbnails and larger lightbox images, respecting the original image orientation. Fonts are downloaded at build time and served locally.
-
-## Social links
-
-Edit the header links in `src/components/SiteHeader.astro` and the Instagram link in `src/pages/index.astro`.

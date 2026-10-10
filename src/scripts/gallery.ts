@@ -19,8 +19,12 @@ function initializeGallery() {
     const dialog = document.querySelector<HTMLDialogElement>("#photo-lightbox");
     if (!gallery || !grid || !dialog) return;
 
-    const cards = [...grid.querySelectorAll<HTMLElement>("[data-photo-index]")]
-        .sort((a, b) => Number(a.dataset.photoIndex) - Number(b.dataset.photoIndex));
+    const cards = [...grid.querySelectorAll<HTMLElement>("[data-photo-index]")];
+    // Shuffle once per page load so filtering retains this visit's order.
+    for (let index = cards.length - 1; index > 0; index--) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [cards[index], cards[randomIndex]] = [cards[randomIndex], cards[index]];
+    }
     const filters = [...gallery.querySelectorAll<HTMLButtonElement>("[data-filter]")];
     const photos = cards.map((card) => JSON.parse(card.querySelector<HTMLElement>("[data-open-photo]")!.dataset.photo!) as GalleryPhoto);
     const filterStatus = gallery.querySelector<HTMLElement>("[data-filter-status]")!;
@@ -159,7 +163,7 @@ function initializeGallery() {
 
     desktop.addEventListener("change", layoutGallery);
     tablet.addEventListener("change", layoutGallery);
-    if (!desktop.matches) layoutGallery();
+    layoutGallery();
 }
 
 initializeGallery();
