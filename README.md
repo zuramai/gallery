@@ -17,12 +17,21 @@ pnpm dev --background
 | `pnpm astro dev logs`   | View server logs                    |
 | `pnpm astro dev stop`   | Stop the server                     |
 | `pnpm check`            | Validate Astro and TypeScript files |
+| `pnpm new-photo`        | Scaffold a photo entry from an image |
 | `pnpm build`            | Build the static site into `dist/`  |
 | `pnpm preview`          | Preview the production build        |
 
 ## Adding photographs
 
-Put your image in `src/photos/images/` and add a Markdown file in `src/photos/`:
+Run the scaffold command, then fill in the title, description, location, and tags:
+
+```sh
+pnpm new-photo ./path/to/your-photo.JPG your-photo-name
+```
+
+This copies the image into `src/photos/images/`, picks the next frame number, and writes a Markdown file in `src/photos/` with the camera settings read from the image's EXIF data.
+
+Alternatively, put your image in `src/photos/images/` and add a Markdown file in `src/photos/` manually:
 
 ```yaml
 ---
